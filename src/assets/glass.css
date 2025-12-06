@@ -1,4 +1,4 @@
-/* Modern UI Design System - Refined */
+/* Minimalist UI Design System */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -9,7 +9,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  background: #f5f7fa;
   min-height: 100vh;
   color: #2d3436;
   font-size: 14px;
@@ -31,11 +31,8 @@ body {
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
 
 /* ===== Buttons ===== */
@@ -43,34 +40,34 @@ body {
   border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.2s;
   border: none;
   letter-spacing: 0.3px;
   padding: 10px 20px;
 }
 
 .el-button--primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
 }
 
 .el-button--primary:hover, .el-button--primary:focus {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(102, 126, 234, 0.45);
+  background: #667eea;
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
 }
 
 .el-button--danger {
-  background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+  background: #ff6b6b;
   color: white;
-  box-shadow: 0 4px 12px rgba(238, 9, 121, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
 }
 
 .el-button--danger:hover, .el-button--danger:focus {
-  background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(238, 9, 121, 0.45);
+  background: #ff6b6b;
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
 }
 
 .el-button--mini {
@@ -88,32 +85,15 @@ body {
 .common-card {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: none;
   position: relative;
   overflow: hidden;
 }
 
-.common-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .common-card:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.common-card:hover::before {
-  opacity: 1;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 /* ===== Input Fields ===== */
@@ -121,7 +101,7 @@ body {
   border-radius: 10px !important;
   border: 2px solid #e9ecef !important;
   background-color: #f8f9fa !important;
-  transition: all 0.3s !important;
+  transition: border-color 0.2s !important;
   font-size: 14px !important;
   color: #2d3436 !important;
   padding: 12px 16px !important;
@@ -134,7 +114,7 @@ body {
 .el-input__inner:focus, .el-textarea__inner:focus {
   border-color: #667eea !important;
   background-color: white !important;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08) !important;
+  box-shadow: none !important;
 }
 
 .el-input__inner, .el-select .el-input__inner {
@@ -150,19 +130,19 @@ body {
 /* ===== Select Dropdown ===== */
 .el-select-dropdown {
   border-radius: 10px !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
   margin-top: 5px !important;
 }
 
 /* ===== Checkbox ===== */
 .el-checkbox {
-  transition: all 0.2s;
+  transition: none;
   margin-right: 12px;
 }
 
 .el-checkbox__input.is-checked .el-checkbox__inner {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   border-color: #667eea;
 }
 
@@ -171,7 +151,7 @@ body {
   height: 18px;
   border-radius: 5px;
   border: 2px solid #dfe6e9;
-  transition: all 0.2s;
+  transition: none;
 }
 
 .el-checkbox__label {
@@ -179,10 +159,6 @@ body {
   font-size: 14px !important;
   font-weight: 500;
   padding-left: 10px;
-}
-
-.el-checkbox:hover .el-checkbox__inner {
-  border-color: #667eea;
 }
 
 /* ===== Layout ===== */
@@ -196,14 +172,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   padding: 0;
   background: white;
-  border-radius: 18px;
-  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(102, 126, 234, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .page-header::before {
@@ -212,46 +188,40 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  height: 3px;
+  background: #667eea;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 30px 35px;
+  gap: 15px;
+  padding: 18px 25px;
   flex: 1;
 }
 
 .header-left i {
-  font-size: 42px !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.25));
+  font-size: 32px !important;
+  color: #667eea !important;
+  filter: none;
 }
 
 .header-text {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
 
 .header-title {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
-  background: linear-gradient(135deg, #2d3436 0%, #667eea 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #2d3436;
   line-height: 1.2;
   letter-spacing: -0.5px;
 }
 
 .header-subtitle {
-  font-size: 13px;
+  font-size: 12px;
   color: #636e72;
   font-weight: 500;
   letter-spacing: 0.3px;
@@ -280,7 +250,7 @@ body {
 /* ===== Dividers & Sections ===== */
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #e9ecef 50%, transparent 100%);
+  background: #e9ecef;
   margin: 28px 0;
 }
 
@@ -303,7 +273,7 @@ body {
   content: '';
   width: 4px;
   height: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   border-radius: 2px;
 }
 
@@ -320,32 +290,26 @@ body {
 
 .internal-card {
   border: 2px solid #f1f3f5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+  background: #fafbfc;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: none;
   min-height: auto;
   margin-bottom: 0;
 }
 
 .internal-card:hover {
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.12) !important;
-  transform: translateY(-3px);
+  border-color: #f1f3f5;
+  background: #fafbfc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
 }
 
 .card-header {
   font-weight: 700;
   font-size: 15px;
   margin-bottom: 16px;
-  color: #2d3436;
+  color: #667eea;
   padding-bottom: 12px;
-  border-bottom: 2px solid transparent;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   position: relative;
 }
 
@@ -356,7 +320,7 @@ body {
   left: 0;
   width: 40px;
   height: 2px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   border-radius: 2px;
 }
 
@@ -372,11 +336,11 @@ body {
   margin-bottom: 14px !important;
   padding: 10px 12px;
   border-radius: 8px;
-  transition: all 0.2s;
+  transition: none;
 }
 
 .vertical-checkboxes .el-checkbox:hover {
-  background: rgba(102, 126, 234, 0.04);
+  background: transparent;
 }
 
 .vertical-checkboxes .el-checkbox:last-child {
@@ -393,16 +357,15 @@ body {
 /* ===== Param Cards ===== */
 .param-card {
   padding: 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: #fafbfc;
   border: 2px solid #e9ecef;
   border-radius: 12px;
   margin-bottom: 15px;
-  transition: all 0.3s;
+  transition: none;
 }
 
 .param-card:hover {
-  border-color: #667eea;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
+  border-color: #e9ecef;
 }
 
 .custom-param-row {
@@ -433,4 +396,43 @@ body {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.5px;
+}
+
+/* ===== Input Group Buttons (Copy Button) ===== */
+.el-input-group__append {
+  background: #667eea !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.el-input-group__append .el-button {
+  background: transparent !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 0 20px;
+  height: 100%;
+  margin: 0 !important;
+}
+
+.el-input-group__append .el-button:hover,
+.el-input-group__append .el-button:focus {
+  background: transparent !important;
+  opacity: 0.9;
+  color: white !important;
+}
+
+.el-input-group__append .el-button i {
+  margin-right: 4px;
+}
+
+/* ===== Action Card Enhancements ===== */
+.action-card .el-form-item {
+  margin-bottom: 0 !important;
+}
+
+.action-card .el-input__inner {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
 }
