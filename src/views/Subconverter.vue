@@ -88,18 +88,21 @@
 
                  <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="Include">
-                        <el-input v-model="form.includeRemarks" placeholder="关键字(正则)" />
+                      <el-form-item label-width="0px">
+                        <div class="input-label-top">过滤指定节点</div>
+                        <el-input v-model="form.includeRemarks" placeholder="节点名包含的关键字，支持正则" />
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                       <el-form-item label="Exclude">
-                        <el-input v-model="form.excludeRemarks" placeholder="关键字(正则)" />
+                       <el-form-item label-width="0px">
+                        <div class="input-label-top">移除指定节点</div>
+                        <el-input v-model="form.excludeRemarks" placeholder="节点名不包含的关键字，支持正则" />
                       </el-form-item>
                     </el-col>
                      <el-col :span="8">
-                       <el-form-item label="FileName">
-                          <el-input v-model="form.filename" placeholder="文件名" />
+                       <el-form-item label-width="0px">
+                          <div class="input-label-top">订阅文件名</div>
+                          <el-input v-model="form.filename" placeholder="返回的订阅文件名" />
                        </el-form-item>
                      </el-col>
                  </el-row>

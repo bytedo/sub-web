@@ -16,6 +16,10 @@ body {
   line-height: 1.6;
 }
 
+input, textarea, select, button {
+  font-family: inherit;
+}
+
 #app {
   min-height: 100vh;
   padding: 10px 0;
@@ -499,4 +503,12 @@ body {
 
 .generate-btn-new i {
   margin-right: 5px;
+}
+
+.input-label-top {
+  font-size: 14px;
+  color: #2d3436;
+  margin-bottom: 8px;
+  font-weight: 600;
+  line-height: 1.5;
 }
