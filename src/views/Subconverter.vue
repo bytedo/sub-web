@@ -1,218 +1,213 @@
+```
 <template>
   <div>
     <el-row style="margin-top: 10px">
       <el-col>
-        <el-card>
-          <div slot="header">
-            Subscription Converter
-            <svg-icon icon-class="github" style="margin-left: 20px" @click="goToProject" />
-
-            <div style="display: inline-block; position:absolute; right: 20px">{{ backendVersion }}</div>
-          </div>
-          <el-container>
-            <el-form :model="form" label-width="140px" label-position="left" style="width: 100%">
-              <el-form-item label="模式设置:">
-                <el-radio v-model="advanced" label="1">基础模式</el-radio>
-                <el-radio v-model="advanced" label="2">进阶模式</el-radio>
-              </el-form-item>
-              <el-form-item label="订阅链接:">
-                <el-input v-model="form.sourceSubUrl" type="textarea" rows="3"
-                  placeholder="支持订阅或ss/ssr/vmess链接，多个链接每行一个或用 | 分隔" @blur="saveSubUrl" />
-              </el-form-item>
-              <el-form-item label="客户端:">
-                <el-select v-model="form.clientType" style="width: 100%">
-                  <el-option v-for="(v, k) in options.clientTypes" :key="k" :label="k" :value="v"></el-option>
-                </el-select>
-              </el-form-item>
-
-              <div v-if="advanced === '2'">
-                <el-form-item label="后端地址:">
-                  <el-autocomplete style="width: 100%" v-model="form.customBackend" :fetch-suggestions="backendSearch"
-                    placeholder="动动小手，（建议）自行搭建后端服务。例：http://127.0.0.1:25500/sub?">
-                    <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">前往项目仓库</el-button>
-                  </el-autocomplete>
-                </el-form-item>
-                <el-form-item label="远程配置:">
-                  <el-select v-model="form.remoteConfig" allow-create filterable placeholder="请选择" style="width: 100%">
-                    <el-option-group v-for="group in options.remoteConfig" :key="group.label" :label="group.label">
-                      <el-option v-for="item in group.options" :key="item.value" :label="item.label"
-                        :value="item.value"></el-option>
-                    </el-option-group>
-                    <el-button slot="append" @click="gotoRemoteConfig" icon="el-icon-link">配置示例</el-button>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="Include:">
-                  <el-input v-model="form.includeRemarks" placeholder="节点名包含的关键字，支持正则" />
-                </el-form-item>
-                <el-form-item label="Exclude:">
-                  <el-input v-model="form.excludeRemarks" placeholder="节点名不包含的关键字，支持正则" />
-                </el-form-item>
-                <el-form-item label="FileName:">
-                  <el-input v-model="form.filename" placeholder="返回的订阅文件名" />
-                </el-form-item>
-
-                <el-form-item v-for="(param, i) in customParams" :key="i">
-                  <el-input slot="label" v-model="param.name" placeholder="自定义参数名">
-                    <div slot="suffix" style="width: 10px;">:</div>
-                  </el-input>
-                  <el-input v-model="param.value" placeholder="自定义参数内容">
-                      <el-button slot="suffix" type="text" icon="el-icon-delete" style="margin-right: 5px" @click="customParams.splice(i, 1)"/>
-                  </el-input>
-                </el-form-item>
-
-                <el-form-item label-width="0px">
-                  <el-row type="flex">
-                    <el-col>
-                      <el-checkbox v-model="form.nodeList" label="输出为 Node List" border></el-checkbox>
-                    </el-col>
-                    <el-popover placement="bottom" v-model="form.extraset">
-                      <el-row>
-                        <el-checkbox v-model="form.emoji" label="Emoji"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.scv" label="跳过证书验证"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.udp" @change="needUdp = true" label="启用 UDP"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.appendType" label="节点类型"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.sort" label="排序节点"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.fdn" label="过滤非法节点"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.expand" label="规则展开"></el-checkbox>
-                      </el-row>
-                      <el-button slot="reference">更多选项</el-button>
-                    </el-popover>
-                    <el-popover placement="bottom" style="margin-left: 10px">
-                      <el-row>
-                        <el-checkbox v-model="form.tpl.surge.doh" label="Surge.DoH"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.tpl.clash.doh" label="Clash.DoH"></el-checkbox>
-                      </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.insert" label="网易云"></el-checkbox>
-                      </el-row>
-                      <el-button slot="reference">定制功能</el-button>
-                    </el-popover>
-                    <el-popover placement="top-end" title="添加自定义转换参数" trigger="hover">
-                      <el-link type="primary" :href="subDocAdvanced" target="_blank" icon="el-icon-info">参考文档</el-link>
-                      <el-button slot="reference" @click="addCustomParam" style="margin-left: 10px">
-                        <i class="el-icon-plus"></i>
-                      </el-button>
-                    </el-popover>
-                  </el-row>
-                </el-form-item>
+        <!-- Page Header -->
+        <div class="page-header">
+           <div class="header-left">
+              <i class="el-icon-s-promotion header-icon" style="font-size: 32px; margin-right: 15px; color: #409EFF;"></i>
+              <div class="header-text">
+                 <div class="header-title">Sub Converter</div>
+                 <div class="header-subtitle">订阅链接转换工具</div>
               </div>
+           </div>
+           <div class="header-right">{{ currentTime }}</div>
+        </div>
 
-              <div style="margin-top: 50px"></div>
+        <div class="common-card main-config-card">
+          <div class="main-container">
+            <!-- Form moved inside here essentially, but keeping structure -->
+            <el-form :model="form" label-width="140px" label-position="left" style="width: 100%">
+          
+          <div class="form-section">
+            <el-form-item label="模式设置">
+               <el-radio-group v-model="advanced" size="small" fill="#2ed573">
+                  <el-radio-button label="1">基础模式</el-radio-button>
+                  <el-radio-button label="2">进阶模式</el-radio-button>
+               </el-radio-group>
+            </el-form-item>
+            
+            <el-form-item label="订阅链接">
+              <el-input
+                v-model="form.sourceSubUrl"
+                type="textarea"
+                rows="3"
+                placeholder="支持订阅或ss/ssr/vmess链接，多个链接每行一个或用 | 分隔"
+                @blur="saveSubUrl"
+              />
+            </el-form-item>
 
-              <el-divider content-position="center">
-                <i class="el-icon-magic-stick"></i>
-              </el-divider>
+            <el-form-item label="客户端">
+               <el-select v-model="form.clientType" style="width: 100%" placeholder="请选择客户端">
+                  <el-option v-for="(v, k) in options.clientTypes" :key="k" :label="k" :value="v"></el-option>
+               </el-select>
+            </el-form-item>
 
-              <el-form-item label="定制订阅:">
-                <el-input class="copy-content" disabled v-model="customSubUrl">
-                  <el-button slot="append" v-clipboard:copy="customSubUrl" v-clipboard:success="onCopy" ref="copy-btn"
-                    icon="el-icon-document-copy">复制</el-button>
-                </el-input>
-              </el-form-item>
-              <el-form-item label="订阅短链:">
-                <el-input class="copy-content" disabled v-model="curtomShortSubUrl">
-                  <el-button slot="append" v-clipboard:copy="curtomShortSubUrl" v-clipboard:success="onCopy"
-                    ref="copy-btn" icon="el-icon-document-copy">复制</el-button>
-                </el-input>
-              </el-form-item>
+            <!-- Advanced Configuration (Hidden by default) -->
+            <transition name="el-zoom-in-top">
+              <div v-if="advanced === '2'" class="advanced-section">
+                
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-form-item label="后端地址">
+                        <el-autocomplete
+                          style="width: 100%"
+                          v-model="form.customBackend"
+                          :fetch-suggestions="backendSearch"
+                          placeholder="建议自行搭建后端服务"
+                        ></el-autocomplete>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item label="远程配置">
+                        <el-select
+                          v-model="form.remoteConfig"
+                          allow-create
+                          filterable
+                          placeholder="请选择"
+                          style="width: 100%"
+                        >
+                          <el-option-group
+                            v-for="group in options.remoteConfig"
+                            :key="group.label"
+                            :label="group.label"
+                          >
+                            <el-option
+                              v-for="item in group.options"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            ></el-option>
+                          </el-option-group>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                </el-row>
 
-              <el-form-item label-width="0px" style="margin-top: 40px; text-align: center">
-                <el-button style="width: 140px" type="danger" @click="makeUrl"
-                  :disabled="form.sourceSubUrl.length === 0">生成订阅链接</el-button>
-                <el-button style="width: 140px" type="danger" @click="makeShortUrl" :loading="loading"
-                  :disabled="customSubUrl.length === 0">生成短链接</el-button>
-                <!-- <el-button style="width: 140px" type="primary" @click="surgeInstall" icon="el-icon-connection">一键导入Surge</el-button> -->
-              </el-form-item>
+                 <el-row :gutter="20">
+                    <el-col :span="8">
+                      <el-form-item label="Include">
+                        <el-input v-model="form.includeRemarks" placeholder="关键字(正则)" />
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                       <el-form-item label="Exclude">
+                        <el-input v-model="form.excludeRemarks" placeholder="关键字(正则)" />
+                      </el-form-item>
+                    </el-col>
+                     <el-col :span="8">
+                       <el-form-item label="FileName">
+                          <el-input v-model="form.filename" placeholder="文件名" />
+                       </el-form-item>
+                     </el-col>
+                 </el-row>
 
-              <el-form-item label-width="0px" style="text-align: center">
-                <el-button style="width: 140px" type="primary" @click="dialogUploadConfigVisible = true"
-                  icon="el-icon-upload" :loading="loading">上传配置</el-button>
-                <el-button style="width: 140px" type="primary" @click="clashInstall" icon="el-icon-connection"
-                  :disabled="customSubUrl.length === 0">一键导入 Clash</el-button>
-              </el-form-item>
-              <el-form-item label-width="0px" style="text-align: center">
-                <el-button style="width: 290px" type="primary" @click="dialogLoadConfigVisible = true"
-                  icon="el-icon-copy-document" :loading="loading">从 URL 解析</el-button>
-              </el-form-item>
-            </el-form>
-          </el-container>
-        </el-card>
-      </el-col>
+                 <!-- Custom Params Display -->
+                 <div v-if="customParams.length > 0" class="custom-params-section">
+                    <div class="section-title-small">自定义参数</div>
+                    <div v-for="(param, i) in customParams" :key="i" class="custom-param-row">
+                       <el-input v-model="param.name" placeholder="参数名" size="medium" style="width: 45%; margin-right: 10px;"></el-input>
+                       <span style="font-weight: bold; margin-right: 10px;">:</span>
+                       <el-input v-model="param.value" placeholder="参数值" size="medium" style="width: 45%; margin-right: 10px;"></el-input>
+                       <el-button type="text" icon="el-icon-close" style="color: #f56c6c; font-size: 16px;" @click="customParams.splice(i, 1)"></el-button>
+                    </div>
+                 </div>
+
+                 <div class="divider"></div>
+
+                 <!-- Options Grid (Inside Main Card) -->
+                 <div class="options-area-internal">
+                    <el-row :gutter="20">
+                      
+                      <!-- Column 1: General Options -->
+                      <el-col :xs="24" :sm="12" :md="8" :lg="8">
+                        <div class="common-card option-card internal-card">
+                          <div class="card-header">通用选项</div>
+                          <div class="card-content vertical-checkboxes">
+                             <el-checkbox v-model="form.emoji" label="Emoji"></el-checkbox>
+                             <el-checkbox v-model="form.nodeList" label="输出为 Node List"></el-checkbox>
+                             <el-checkbox v-model="form.sort" label="排序节点"></el-checkbox>
+                             <el-checkbox v-model="form.appendType" label="节点类型"></el-checkbox>
+                          </div>
+                        </div>
+                      </el-col>
+
+                      <!-- Column 2: Filter & Rules -->
+                      <el-col :xs="24" :sm="12" :md="8" :lg="8">
+                        <div class="common-card option-card internal-card">
+                           <div class="card-header">过滤与规则</div>
+                           <div class="card-content vertical-checkboxes">
+                              <el-checkbox v-model="form.scv" label="跳过证书验证"></el-checkbox>
+                              <el-checkbox v-model="form.udp" @change="needUdp = true" label="启用 UDP"></el-checkbox>
+                              <el-checkbox v-model="form.fdn" label="过滤非法节点"></el-checkbox>
+                              <el-checkbox v-model="form.expand" label="规则展开"></el-checkbox>
+                           </div>
+                        </div>
+                      </el-col>
+
+                      <!-- Column 3: Custom & Special -->
+                      <el-col :xs="24" :sm="12" :md="8" :lg="8">
+                         <div class="common-card option-card internal-card">
+                           <div class="card-header">定制功能</div>
+                           <div class="card-content vertical-checkboxes">
+                              <el-checkbox v-model="form.tpl.surge.doh" label="Surge.DoH"></el-checkbox>
+                              <el-checkbox v-model="form.tpl.clash.doh" label="Clash.DoH"></el-checkbox>
+                              <el-checkbox v-model="form.insert" label="网易云"></el-checkbox>
+                              
+                              <div class="custom-buttons">
+                                 <el-button size="mini" icon="el-icon-plus" @click="addCustomParam">添加参数</el-button>
+                              </div>
+                           </div>
+                         </div>
+                      </el-col>
+                    </el-row>
+                 </div>
+                 
+              </div>
+            </transition>
+          </div>
+        </el-form>
+      </div>
+
+      <!-- Action Area (Buttons) -->
+      <div class="action-card common-card" style="margin-top: 20px; padding: 20px;">
+         <el-form label-width="80px">
+           <el-form-item label="定制订阅">
+              <el-input v-model="customSubUrl" readonly size="medium">
+                 <el-button slot="append" v-clipboard:copy="customSubUrl" v-clipboard:success="onCopy" icon="el-icon-document-copy">复制</el-button>
+              </el-input>
+           </el-form-item>
+         </el-form>
+         <div style="text-align: center; margin-top: 20px;">
+            <el-button
+              type="danger"
+              class="generate-btn"
+              @click="makeUrl"
+              :disabled="form.sourceSubUrl.length === 0"
+              icon="el-icon-magic-stick"
+              round
+            >
+              生成订阅链接
+            </el-button>
+         </div>
+      </div>
+
+      </div>
+    </el-col>
     </el-row>
-
-    <el-dialog :visible.sync="dialogUploadConfigVisible" :show-close="false" :close-on-click-modal="false"
-      :close-on-press-escape="false" width="700px">
-      <div slot="title">
-        Remote config upload
-        <el-popover trigger="hover" placement="right" style="margin-left: 10px">
-          <el-link type="primary" :href="sampleConfig" target="_blank" icon="el-icon-info">参考配置</el-link>
-          <i class="el-icon-question" slot="reference"></i>
-        </el-popover>
-      </div>
-      <el-form label-position="left">
-        <el-form-item prop="uploadConfig">
-          <el-input v-model="uploadConfig" type="textarea" :autosize="{ minRows: 15, maxRows: 30 }" maxlength="10000"
-            show-word-limit></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="uploadConfig = ''; dialogUploadConfigVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmUploadConfig" :disabled="uploadConfig.length === 0">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogLoadConfigVisible" :show-close="false" :close-on-click-modal="false"
-      :close-on-press-escape="false" width="700px">
-      <div slot="title">
-        解析 Subconverter 链接
-      </div>
-      <el-form label-position="left" :inline="true" >
-        <el-form-item prop="uploadConfig" label="订阅链接：" label-width="85px">
-          <el-input v-model="loadConfig" style="width: 565px"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="loadConfig = ''; dialogLoadConfigVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmLoadConfig" :disabled="loadConfig.length === 0">确 定</el-button>
-      </div>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
-const project = process.env.VUE_APP_PROJECT
-const remoteConfigSample = process.env.VUE_APP_SUBCONVERTER_REMOTE_CONFIG
-const subDocAdvanced = process.env.VUE_APP_SUBCONVERTER_DOC_ADVANCED
-const gayhubRelease = process.env.VUE_APP_BACKEND_RELEASE
 const defaultBackend = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND + '/sub?'
-const shortUrlBackend = process.env.VUE_APP_MYURLS_API
-const configUploadBackend = process.env.VUE_APP_CONFIG_UPLOAD_API
-const tgBotLink = process.env.VUE_APP_BOT_LINK
 
 export default {
   data() {
     return {
       backendVersion: "",
       advanced: "2",
-
-      // 是否为 PC 端
       isPC: true,
-
       options: {
         clientTypes: {
           Clash: "clash",
@@ -316,7 +311,6 @@ export default {
         filename: "",
         emoji: true,
         nodeList: false,
-        extraset: false,
         sort: false,
         udp: false,
         tfo: false,
@@ -324,89 +318,38 @@ export default {
         fdn: false,
         expand: true,
         appendType: false,
-        insert: false, // 是否插入默认订阅的节点，对应配置项 insert_url
-        new_name: true, // 是否使用 Clash 新字段
-
-        // tpl 定制功能
+        insert: false,
+        new_name: true,
         tpl: {
           surge: {
-            doh: false // dns 查询是否使用 DoH
+            doh: false
           },
           clash: {
             doh: false
           }
         }
       },
-
       customParams: [],
-
-      loading: false,
       customSubUrl: "",
-      curtomShortSubUrl: "",
-
-      dialogUploadConfigVisible: false,
-      loadConfig: "",
-      dialogLoadConfigVisible: false,
-      uploadConfig: "",
-      uploadPassword: "",
-      myBot: tgBotLink,
-      sampleConfig: remoteConfigSample,
-      subDocAdvanced: subDocAdvanced,
-
-      needUdp: false, // 是否需要添加 udp 参数
+      needUdp: false,
     };
   },
   created() {
     document.title = "Subscription Converter";
     this.isPC = this.$getOS().isPc;
-
-    // 获取 url cache
     if (process.env.VUE_APP_USE_STORAGE === 'true') {
       this.form.sourceSubUrl = this.getLocalStorageItem('sourceSubUrl')
     }
   },
   mounted() {
     this.form.clientType = "clash";
-    this.notify();
-    this.getBackendVersion();
+    // this.getBackendVersion();
+  },
+  beforeDestroy() {
   },
   methods: {
     onCopy() {
       this.$message.success("Copied!");
-    },
-    goToProject() {
-      window.open(project);
-    },
-    gotoGayhub() {
-      window.open(gayhubRelease);
-    },
-    gotoRemoteConfig() {
-      window.open(remoteConfigSample);
-    },
-    clashInstall() {
-      if (this.customSubUrl === "") {
-        this.$message.error("请先填写必填项，生成订阅链接");
-        return false;
-      }
-
-      const url = "clash://install-config?url=";
-      window.open(
-        url +
-        encodeURIComponent(
-          this.curtomShortSubUrl !== ""
-            ? this.curtomShortSubUrl
-            : this.customSubUrl
-        )
-      );
-    },
-    surgeInstall() {
-      if (this.customSubUrl === "") {
-        this.$message.error("请先填写必填项，生成订阅链接");
-        return false;
-      }
-
-      const url = "surge://install-config?url=";
-      window.open(url + this.customSubUrl);
     },
     addCustomParam(){
       this.customParams.push({
@@ -487,7 +430,6 @@ export default {
           if (this.form.tpl.clash.doh === true) {
             this.customSubUrl += "&clash.doh=true";
           }
-
           this.customSubUrl += "&new_name=" + this.form.new_name.toString();
         }
 
@@ -499,207 +441,11 @@ export default {
       this.$copyText(this.customSubUrl);
       this.$message.success("定制订阅已复制到剪贴板");
     },
-    makeShortUrl() {
-      if (this.customSubUrl === "") {
-        this.$message.warning("请先生成订阅链接，再获取对应短链接");
-        return false;
-      }
-
-      this.loading = true;
-
-      let data = new FormData();
-      data.append("longUrl", btoa(this.customSubUrl));
-
-      this.$axios
-        .post(shortUrlBackend, data, {
-          header: {
-            "Content-Type": "application/form-data; charset=utf-8"
-          }
-        })
-        .then(res => {
-          if (res.data.Code === 1 && res.data.ShortUrl !== "") {
-            this.curtomShortSubUrl = res.data.ShortUrl;
-            this.$copyText(res.data.ShortUrl);
-            this.$message.success("短链接已复制到剪贴板");
-          } else {
-            this.$message.error("短链接获取失败：" + res.data.Message);
-          }
-        })
-        .catch(() => {
-          this.$message.error("短链接获取失败");
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    notify() {
-      const h = this.$createElement;
-
-      this.$notify({
-        title: "隐私提示",
-        type: "warning",
-        message: h(
-          "i",
-          { style: "color: teal" },
-          "各种订阅链接（短链接服务除外）生成纯前端实现，无隐私问题。默认提供后端转换服务，隐私担忧者请自行搭建后端服务。"
-        )
-      });
-    },
-    confirmUploadConfig() {
-      if (this.uploadConfig === "") {
-        this.$message.warning("远程配置不能为空");
-        return false;
-      }
-
-      this.loading = true;
-
-      let body = {
-        content: this.uploadConfig,
-      }
-      this.$axios.post(configUploadBackend, body).then(res => {
-        if (res.data.code === 0 && res.data.data.url !== "") {
-          this.$message.success(
-            "远程配置上传成功，配置链接已复制到剪贴板，有效期三个月望知悉"
-          );
-
-          // 自动填充至『表单-远程配置』
-          this.form.remoteConfig = res.data.data.url;
-          this.$copyText(this.form.remoteConfig);
-
-          this.dialogUploadConfigVisible = false;
-        } else {
-          this.$message.error("远程配置上传失败: " + res.data.msg);
-        }
-      })
-        .catch(() => {
-          this.$message.error("远程配置上传失败");
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    /**
- * Asynchronously analyzes the URL.
- *
- * @return {Promise<string>} The result of the analysis.
- */
-    async analyzeUrl() {
-      // Check if `loadConfig` includes "target"
-      if (this.loadConfig.includes("target")) {
-        // If it does, return `loadConfig`
-        return this.loadConfig;
-      } else {
-        // Otherwise, set `loading` to true
-        this.loading = true;
-        try {
-          // Fetch the data from `loadConfig` using GET method and follow redirects
-          let response = await fetch(this.loadConfig, {
-            method: "GET",
-            redirect: "follow",
-          });
-          // Return the URL from the response
-          return response.url;
-        } catch (e) {
-          // If an error occurs, display an error message with the error details
-          this.$message.error(
-            "解析短链接失败，请检查短链接服务端是否配置跨域：" + e
-          );
-        } finally {
-          // Set `loading` to false
-          this.loading = false;
-        }
-      }
-    },
-    /**
-     * Confirm and load the configuration.
-     *
-     * @return {boolean} Returns false if the 'loadConfig' is empty, otherwise returns true.
-     */
-    confirmLoadConfig() {
-      // Check if 'loadConfig' is empty
-      if (this.loadConfig.trim() === "") {
-        // Display error message if 'loadConfig' is empty
-        this.$message.error("订阅链接不能为空");
-        return false;
-      }
-
-      // Async function to handle the configuration loading
-      (async () => {
-        try {
-          // Analyze the URL and extract its components
-          const url = new URL(await this.analyzeUrl());
-
-          // Set the custom backend URL
-          this.form.customBackend = url.origin + url.pathname + "?";
-
-          // Parse the URL parameters
-          const params = new URLSearchParams(url.search);
-
-          // Record parameters have been read
-          const getParam = params.get.bind(params)
-          const excludeParams = new Set()
-          params.get = key => {
-            excludeParams.add(key)
-            return getParam(key)
-          }
-
-          // Get the 'target' parameter
-          const target = params.get("target");
-
-          // Set the client type based on the 'target' parameter
-          if (target === "surge") {
-            const ver = params.get("ver") || "4";
-            this.form.clientType = target + "&ver=" + ver;
-          } else {
-            this.form.clientType = target;
-          }
-
-          // Set other form properties based on the URL parameters
-          this.form.sourceSubUrl = params.get("url").replace(/\|/g, "\n");
-          this.form.insert = params.get("insert") === "true";
-          this.form.remoteConfig = params.get("config");
-          this.form.excludeRemarks = params.get("exclude");
-          this.form.includeRemarks = params.get("include");
-          this.form.filename = params.get("filename");
-          this.form.appendType = params.get("append_type") === "true";
-          this.form.emoji = params.get("emoji") === "true";
-          this.form.nodeList = params.get("list") === "true";
-          this.form.tfo = params.get("tfo") === "true";
-          this.form.scv = params.get("scv") === "true";
-          this.form.fdn = params.get("fdn") === "true";
-          this.form.sort = params.get("sort") === "true";
-          this.form.udp = params.get("udp") === "true";
-          this.form.expand = params.get("expand") === "true";
-          this.form.tpl.surge.doh = params.get("surge.doh") === "true";
-          this.form.tpl.clash.doh = params.get("clash.doh") === "true";
-          this.form.new_name = params.get("new_name") === "true";
-
-          // Filter custom parameters
-          this.customParams = Array.from(params
-            .entries()
-            .filter(e => !excludeParams.has(e[0]))
-            .map(e => ({ name: e[0], value: e[1] }))
-          )
-
-          // Hide the configuration dialog
-          this.dialogLoadConfigVisible = false;
-
-          // Display success message
-          this.$message.success("长/短链接已成功解析为订阅信息");
-        } catch (error) {
-          // Display error message if URL is not valid
-          this.$message.error("请输入正确的订阅地址!");
-        }
-      })();
-    },
     backendSearch(queryString, cb) {
       let backends = this.options.backendOptions;
-
       let results = queryString
         ? backends.filter(this.createFilter(queryString))
         : backends;
-
-      // 调用 callback 返回建议列表的数据
       cb(results);
     },
     createFilter(queryString) {
@@ -737,7 +483,6 @@ export default {
           localStorage.removeItem(itemKey)
         }
       }
-
       return itemValue
     },
     setLocalStorageItem(itemKey, itemValue) {
@@ -755,3 +500,209 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Glassmorphism Logic is in Main CSS, here we handle structure */
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.content {
+  width: 100%;
+  max-width: 900px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  letter-spacing: 1px;
+}
+
+.version {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-weight: 300;
+  background: rgba(255,255,255,0.1);
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05); /* Softer shadow */
+  padding: 40px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .glass-card {
+     padding: 20px;
+  }
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  margin-top: 20px; /* Spacing between sections */
+  display: flex;
+  align-items: center;
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  border-left: 3px solid #667eea;
+}
+
+.custom-radio-group .el-radio-button__inner {
+  border: none;
+  background: rgba(0,0,0,0.05);
+  border-radius: 8px;
+  margin-right: 10px;
+  padding: 10px 20px;
+  box-shadow: none;
+  color: #555;
+  transition: all 0.3s;
+}
+
+.custom-radio-group .el-radio-button__original-radio:checked + .el-radio-button__inner {
+  background: #667eea;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Checkbox Grid */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Custom Param Structure */
+.custom-param-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.param-name { width: 40%; }
+.param-value { width: 60%; }
+
+.add-param-btn-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  margin: 40px 0;
+}
+
+.generate-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 15px 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(118, 75, 162, 0.4);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(118, 75, 162, 0.5);
+}
+
+.generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Overriding Element UI for Glass Effect on specific inputs */
+::v-deep .el-input__inner, ::v-deep .el-textarea__inner {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+  color: #333;
+}
+
+::v-deep .el-input__inner:focus, ::v-deep .el-textarea__inner:focus {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+::v-deep .el-card {
+  border: none;
+  background: transparent;
+}
+
+::v-deep .el-checkbox.is-bordered {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  width: 100%;
+  margin-right: 0;
+  padding: 10px 15px;
+  height: auto;
+  transition: all 0.2s;
+}
+
+::v-deep .el-checkbox.is-bordered.is-checked {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+}
+
+::v-deep .el-checkbox__label {
+  font-weight: 500;
+  color: #444;
+}
+
+/* Fix Element UI form item margin */
+.el-form-item {
+  margin-bottom: 22px;
+}
+</style>

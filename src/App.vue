@@ -3,3 +3,8 @@
     <router-view/>
   </div>
 </template>
+
+<style>
+@import './assets/glass.css';
+</style>
+
