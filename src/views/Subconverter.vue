@@ -1,8 +1,9 @@
 ```
 <template>
   <div>
-    <el-row style="margin-top: 10px">
+    <el-row>
       <el-col>
+        <div class="main-container">
         <!-- Page Header -->
         <div class="page-header">
            <div class="header-left">
@@ -16,7 +17,7 @@
         </div>
 
         <div class="common-card main-config-card">
-          <div class="main-container">
+
             <!-- Form moved inside here essentially, but keeping structure -->
             <el-form :model="form" label-width="140px" label-position="left" style="width: 100%">
           
@@ -49,7 +50,7 @@
               <div v-if="advanced === '2'" class="advanced-section">
                 
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                       <el-form-item label="后端地址">
                         <el-autocomplete
                           style="width: 100%"
@@ -59,7 +60,7 @@
                         ></el-autocomplete>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="24">
                       <el-form-item label="远程配置">
                         <el-select
                           v-model="form.remoteConfig"
@@ -165,31 +166,45 @@
                  </div>
                  
               </div>
-            </transition>
+             </transition>
           </div>
         </el-form>
       </div>
 
       <!-- Action Area (Buttons) -->
-      <div class="action-card common-card" style="margin-top: 20px; padding: 20px;">
-         <el-form label-width="80px">
-           <el-form-item label="定制订阅">
-              <el-input v-model="customSubUrl" readonly size="medium">
-                 <el-button slot="append" v-clipboard:copy="customSubUrl" v-clipboard:success="onCopy" icon="el-icon-document-copy">复制</el-button>
-              </el-input>
-           </el-form-item>
-         </el-form>
-         <div style="text-align: center; margin-top: 20px;">
-            <el-button
-              type="danger"
-              class="generate-btn"
-              @click="makeUrl"
-              :disabled="form.sourceSubUrl.length === 0"
-              icon="el-icon-magic-stick"
-              round
-            >
-              生成订阅链接
-            </el-button>
+      <!-- Action Area (Buttons) -->
+      <div class="action-card common-card">
+         <div class="action-header">
+            <div class="action-title">生成结果</div>
+            <div class="action-subtitle">生成的订阅链接和短链接</div>
+         </div>
+         
+         <div class="action-body">
+            <div class="input-label">定制订阅</div>
+            <el-input v-model="customSubUrl" readonly size="large" class="copy-input">
+                <el-button slot="append" v-clipboard:copy="customSubUrl" v-clipboard:success="onCopy" icon="el-icon-document-copy">复制</el-button>
+            </el-input>
+            
+            <div class="action-buttons">
+               <el-button
+                 type="danger"
+                 class="generate-btn-new"
+                 @click="makeUrl"
+                 :disabled="form.sourceSubUrl.length === 0"
+                 icon="el-icon-plus"
+               >
+                 生成订阅链接
+               </el-button>
+               
+               <el-button
+                 class="import-btn-new"
+                 icon="el-icon-connection"
+                 @click="clashInstall"
+                 :disabled="customSubUrl.length === 0"
+               >
+                 一键导入 Clash
+               </el-button>
+            </div>
          </div>
       </div>
 
@@ -496,6 +511,14 @@ export default {
         value: itemValue
       }
       localStorage.setItem(itemKey, JSON.stringify(data))
+    },
+    clashInstall() {
+      if (this.customSubUrl === "") {
+        this.$message.error("请先生成订阅链接");
+        return false;
+      }
+      const url = "clash://install-config?url=" + encodeURIComponent(this.customSubUrl);
+      window.open(url);
     }
   },
 };
@@ -504,12 +527,10 @@ export default {
 <style scoped>
 /* Glassmorphism Logic is in Main CSS, here we handle structure */
 .main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .content {
@@ -563,8 +584,8 @@ export default {
   font-size: 1.2rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 15px;
-  margin-top: 20px; /* Spacing between sections */
+  margin-bottom: 10px;
+  margin-top: 0; /* Remove spacing */
   display: flex;
   align-items: center;
 }
@@ -577,7 +598,7 @@ export default {
   font-size: 1rem;
   font-weight: 600;
   color: #555;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-bottom: 10px;
   padding-left: 5px;
   border-left: 3px solid #667eea;
@@ -702,7 +723,5 @@ export default {
 }
 
 /* Fix Element UI form item margin */
-.el-form-item {
-  margin-bottom: 22px;
-}
+
 </style>
